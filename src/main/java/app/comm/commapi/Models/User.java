@@ -24,11 +24,20 @@ public class User {
     private String email;
     @Column(name = "password", nullable = false)
     private String password;
+    @Column(name = "bio")
+    private String bio;
+    @Column(name = "followers", nullable = false)
+    private Long followers;
+    @Column(name = "following", nullable = false)
+    private Long following;
 
-    public User(String username, String email, String password) {
+    public User(String username, String email, String password, String bio, Long followers, Long following) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.bio = bio;
+        this.followers = followers;
+        this.following = following;
     }
 
     public User() {
@@ -65,4 +74,29 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public Long getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(Long followers) {
+        this.followers = followers;
+    }
+
+    public Long getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(Long following) {
+        this.following = following;
+    }
+
 }

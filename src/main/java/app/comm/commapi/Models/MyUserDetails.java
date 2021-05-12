@@ -18,6 +18,18 @@ public class MyUserDetails implements UserDetails {
         return user.getId();
     }
 
+    public String getBio() {
+        return user.getBio();
+    }
+
+    public Long getFollowers() {
+        return user.getFollowers();
+    }
+
+    public Long getFollowing() {
+        return user.getFollowing();
+    }
+
     public String getEmail() {
         return user.getEmail();
     }

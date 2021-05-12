@@ -12,7 +12,9 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>comm-api</name>
 	<description>Comm API</description>
-
+	<properties>
+		<java.version>15</java.version>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
