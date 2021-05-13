@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import app.comm.commapi.Models.MyUserDetails;
+import app.comm.commapi.Services.CustomUserDetailsService;
+import app.comm.commapi.util.JwtUtil;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -19,9 +21,9 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     @Autowired
-    private app.comm.commapi.util.JwtUtil jwtUtil;
+    private JwtUtil jwtUtil;
     @Autowired
-    private app.comm.commapi.Services.CustomUserDetailsService service;
+    private CustomUserDetailsService service;
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
