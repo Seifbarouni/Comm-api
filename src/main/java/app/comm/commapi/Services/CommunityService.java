@@ -1,5 +1,7 @@
 package app.comm.commapi.Services;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,10 @@ public class CommunityService {
 
     public Optional<Community> getCommunityByName(String name) {
         return communityRepository.findByName(name);
+    }
+
+    public List<Community> getExploreSection(List<Long> ids) {
+        return communityRepository.findExploreSection(ids);
     }
 
 }

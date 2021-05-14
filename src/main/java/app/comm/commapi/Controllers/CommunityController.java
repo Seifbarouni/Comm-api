@@ -1,6 +1,7 @@
 package app.comm.commapi.Controllers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +47,21 @@ public class CommunityController {
         if (comm.isPresent())
             return comm.get();
         return null;
+    }
+
+    @GetMapping("/explore/{userId}")
+    public List<Community> getExploreCommunitiesSection(@PathVariable(name = "userId") Long id) {
+        List<Community> exploreCommunities = new ArrayList<>();
+        Optional<List<Joins>> userJoins = joinsService.getCommunitiesByUserId(id);
+        if (userJoins.isPresent()) {
+            List<Long> idsOfJoinedCommunities = new ArrayList<Long>();
+            for (Joins jo : userJoins.get()) {
+                idsOfJoinedCommunities.add(jo.getCommunityId());
+            }
+            exploreCommunities = communityService.getExploreSection(idsOfJoinedCommunities);
+        }
+        Collections.shuffle(exploreCommunities);
+        return exploreCommunities;
     }
 
 }
