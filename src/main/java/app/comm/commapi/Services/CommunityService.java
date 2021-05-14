@@ -27,4 +27,8 @@ public class CommunityService {
         return communityRepository.findExploreSection(ids);
     }
 
+    public List<Community> getAllCommunities() {
+        return communityRepository.findAll();
+    }
+
 }

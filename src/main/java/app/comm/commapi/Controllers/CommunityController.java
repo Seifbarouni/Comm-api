@@ -53,12 +53,14 @@ public class CommunityController {
     public List<Community> getExploreCommunitiesSection(@PathVariable(name = "userId") Long id) {
         List<Community> exploreCommunities = new ArrayList<>();
         Optional<List<Joins>> userJoins = joinsService.getCommunitiesByUserId(id);
-        if (userJoins.isPresent()) {
+        if (!userJoins.get().isEmpty()) {
             List<Long> idsOfJoinedCommunities = new ArrayList<Long>();
             for (Joins jo : userJoins.get()) {
                 idsOfJoinedCommunities.add(jo.getCommunityId());
             }
             exploreCommunities = communityService.getExploreSection(idsOfJoinedCommunities);
+        } else {
+            exploreCommunities = communityService.getAllCommunities();
         }
         Collections.shuffle(exploreCommunities);
         return exploreCommunities;
