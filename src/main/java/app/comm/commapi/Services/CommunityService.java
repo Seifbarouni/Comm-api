@@ -31,4 +31,32 @@ public class CommunityService {
         return communityRepository.findAll();
     }
 
+    public String addMemberToCommunity(Long communityId) {
+        Optional<Community> optComm = communityRepository.findById(communityId);
+        if (optComm.isPresent()) {
+            Community comm = optComm.get();
+            comm.setMembers(comm.getMembers() + 1);
+            comm = communityRepository.save(comm);
+            if (comm != null)
+                return "Success";
+            return "Error";
+        }
+        return "Error";
+    }
+
+    public String deleteMemberFromCommunity(Long communityId) {
+        Optional<Community> optComm = communityRepository.findById(communityId);
+        if (optComm.isPresent()) {
+            Community comm = optComm.get();
+            if (comm.getMembers() > 0L) {
+                comm.setMembers(comm.getMembers() - 1);
+                comm = communityRepository.save(comm);
+            }
+            if (comm != null)
+                return "Success";
+            return "Error";
+        }
+        return "Error";
+    }
+
 }
