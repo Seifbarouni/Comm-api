@@ -25,4 +25,10 @@ public class FollowsController {
             @PathVariable(name = "followedId") Long followedId) {
         return followsService.follow(followerId, followedId);
     }
+
+    @GetMapping("/unfollow/{unfollowerId}/{unfollowedId}")
+    public String unfollow(@PathVariable(name = "unfollowerId") Long followerId,
+            @PathVariable(name = "unfollowedId") Long followedId) {
+        return followsService.unfollow(followerId, followedId);
+    }
 }

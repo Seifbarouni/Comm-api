@@ -42,4 +42,22 @@ public class FollowsService {
         }
         return "Error";
     }
+
+    public String unfollow(Long followerId, Long followedId) {
+        Follows testFollow = followsRepository.findFollow(followedId, followedId);
+        if (testFollow != null) {
+            followsRepository.delete(testFollow);
+            Optional<User> follower = userRepository.findById(followerId);
+            Optional<User> followed = userRepository.findById(followedId);
+            if (followed.isEmpty() || follower.isEmpty())
+                return "Error";
+            follower.get().setFollowing(follower.get().getFollowing() - 1L);
+            followed.get().setFollowers(followed.get().getFollowers() - 1L);
+            userRepository.save(follower.get());
+            userRepository.save(followed.get());
+            return "Success";
+        }
+        return "Error";
+    }
+
 }
