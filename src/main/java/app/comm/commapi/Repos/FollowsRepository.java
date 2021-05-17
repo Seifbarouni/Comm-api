@@ -11,11 +11,11 @@ import app.comm.commapi.Models.Follows;
 
 public interface FollowsRepository extends JpaRepository<Follows, Long> {
 
-    @Query("SELECT f FROM Follows f WHERE f.followerId=:followerId AND f.followedId=:followedId")
-    Follows findFollow(@Param("followerId") Long followerId, @Param("followedId") Long followedId);
+    @Query("SELECT f FROM Follows f WHERE f.followerId=?1 AND f.followedId=?2")
+    Follows findFollow(Long followerId, Long followedId);
 
     @Modifying
     @Transactional
     @Query("DELETE FROM Follows  WHERE followerId = ?1 AND followedId = ?2")
-    void deleteJoin(Long followerId, Long followedId);
+    void deleteFollow(Long followerId, Long followedId);
 }

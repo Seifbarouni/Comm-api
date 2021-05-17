@@ -33,8 +33,8 @@ public class FollowsService {
                 Optional<User> followed = userRepository.findById(followedId);
                 if (followed.isEmpty() || follower.isEmpty())
                     return "Error";
-                follower.get().setFollowing(follower.get().getFollowing() + 1L);
-                followed.get().setFollowers(followed.get().getFollowers() + 1L);
+                follower.get().setFollowing(follower.get().getFollowing() + 1);
+                followed.get().setFollowers(followed.get().getFollowers() + 1);
                 userRepository.save(follower.get());
                 userRepository.save(followed.get());
                 return "Success";
@@ -44,15 +44,15 @@ public class FollowsService {
     }
 
     public String unfollow(Long followerId, Long followedId) {
-        Follows testFollow = followsRepository.findFollow(followedId, followedId);
+        Follows testFollow = followsRepository.findFollow(followerId, followedId);
         if (testFollow != null) {
-            followsRepository.delete(testFollow);
+            followsRepository.deleteFollow(followerId, followedId);
             Optional<User> follower = userRepository.findById(followerId);
             Optional<User> followed = userRepository.findById(followedId);
             if (followed.isEmpty() || follower.isEmpty())
                 return "Error";
-            follower.get().setFollowing(follower.get().getFollowing() - 1L);
-            followed.get().setFollowers(followed.get().getFollowers() - 1L);
+            follower.get().setFollowing(follower.get().getFollowing() - 1);
+            followed.get().setFollowers(followed.get().getFollowers() - 1);
             userRepository.save(follower.get());
             userRepository.save(followed.get());
             return "Success";
