@@ -6,25 +6,23 @@ import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
-//import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import app.comm.commapi.Models.PostInput;
+import app.comm.commapi.Models.Post;
 
-//import app.comm.commapi.Repos.PostsRepository;
+import app.comm.commapi.Repos.PostsRepository;
 
 @Service
 public class PostsService {
-    // @Autowired
-    // private PostsRepository postsRepository;
+    @Autowired
+    private PostsRepository postsRepository;
 
-    public void savePost(MultipartFile file, PostInput post) {
-        // - compress the file(if the file is not empty)
-        // - create a new Post instance
-        // - put the file bytes and the PostInput
-        // data in the Post instance
-        // - save the post in the db
+    public String savePost(Post post) {
+        Post newPost = postsRepository.save(post);
+        if (newPost != null)
+            return "Success";
+        return "Error";
     }
 
     public byte[] compressBytes(byte[] data) {

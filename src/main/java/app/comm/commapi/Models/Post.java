@@ -3,7 +3,6 @@ package app.comm.commapi.Models;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -11,14 +10,13 @@ import javax.persistence.Table;
 @Table(name = "post")
 public class Post {
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
     @Column(name = "community", nullable = false)
     private String community;
-    @Column(name = "user", nullable = false)
+    @Column(name = "username", nullable = false)
     private String user;
-    @Column(name = "createdAt", nullable = false)
+    @Column(name = "created", nullable = false)
     private String createdAt;
     @Column(name = "textContent", nullable = false)
     private String textContent;

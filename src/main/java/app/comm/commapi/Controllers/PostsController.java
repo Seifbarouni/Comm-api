@@ -1,14 +1,14 @@
 package app.comm.commapi.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import app.comm.commapi.Models.PostInput;
+import app.comm.commapi.Models.Post;
 import app.comm.commapi.Services.PostsService;
 
 @RestController
@@ -17,12 +17,37 @@ public class PostsController {
     @Autowired
     private PostsService postsService;
 
-    @PostMapping("/p/addPost")
-    public String addPost(@RequestParam(name = "file", required = false) @Nullable MultipartFile file,
-            @RequestParam(name = "postInput", required = true) PostInput postInput) {
-        System.out.println(file.getContentType());
-        postsService.savePost(file, postInput);
-        return "";
+    @PostMapping(value = "/p/addPost/{community}/{user}/{createdAt}/{text}", consumes = "multipart/form-data")
+    public String addPost(@RequestPart MultipartFile file, @PathVariable(name = "community") String community,
+            @PathVariable(name = "user") String user, @PathVariable(name = "createdAt") String createdAt,
+            @PathVariable(name = "text") String text) {
+        Post post = new Post();
+        post.setComments(0L);
+        post.setLikes(0L);
+        post.setCommunity(community);
+        post.setUser(user);
+        post.setTextContent(text);
+        post.setCreatedAt(createdAt);
+
+        if (file != null) {
+            if (file.getContentType().contains("image")) {
+                try {
+                    post.setImage(postsService.compressBytes(file.getBytes()));
+                } catch (Exception e) {
+                    return "Error";
+                }
+            } else if (file.getContentType().contains("video")) {
+                try {
+                    post.setVideo(postsService.compressBytes(file.getBytes()));
+                } catch (Exception e) {
+                    return "Error";
+                }
+            }
+        } else {
+            post.setImage(null);
+            post.setVideo(null);
+        }
+        return postsService.savePost(post);
     }
 
 }
