@@ -42,7 +42,7 @@ public class PostsService {
             outputStream.close();
         } catch (IOException e) {
         }
-        System.out.println("Compressed Image Byte Size - " + outputStream.toByteArray().length);
+        System.out.println("Compressed  Byte Size - " + outputStream.toByteArray().length);
         return outputStream.toByteArray();
     }
 
@@ -66,15 +66,28 @@ public class PostsService {
     public List<Post> getPostsByCommunity(String community) {
         Optional<List<Post>> posts = postsRepository.findByCommunity(community);
         List<Post> res = new ArrayList<>();
-        if (posts.isPresent() && !posts.get().isEmpty())
+        if (posts.isPresent() && !posts.get().isEmpty()) {
             res = posts.get();
+            for (Post post : res) {
+                if (post.getImage() != null)
+                    post.setImage(decompressBytes(post.getImage()));
+                else if (post.getVideo() != null)
+                    post.setVideo(decompressBytes(post.getVideo()));
+            }
+        }
         return res;
     }
 
     public Post getPostById(Long id) {
         Optional<Post> post = postsRepository.findById(id);
-        if (post.isPresent())
-            return post.get();
+        if (post.isPresent()) {
+            Post p = post.get();
+            if (p.getImage() != null)
+                p.setImage(decompressBytes(p.getImage()));
+            else if (p.getVideo() != null)
+                p.setVideo(decompressBytes(p.getVideo()));
+            return p;
+        }
         return null;
     }
 }
