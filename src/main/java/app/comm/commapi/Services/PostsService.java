@@ -2,6 +2,9 @@ package app.comm.commapi.Services;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -58,5 +61,20 @@ public class PostsService {
         } catch (DataFormatException e) {
         }
         return outputStream.toByteArray();
+    }
+
+    public List<Post> getPostsByCommunity(String community) {
+        Optional<List<Post>> posts = postsRepository.findByCommunity(community);
+        List<Post> res = new ArrayList<>();
+        if (posts.isPresent() && !posts.get().isEmpty())
+            res = posts.get();
+        return res;
+    }
+
+    public Post getPostById(Long id) {
+        Optional<Post> post = postsRepository.findById(id);
+        if (post.isPresent())
+            return post.get();
+        return null;
     }
 }

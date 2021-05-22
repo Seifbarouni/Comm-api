@@ -1,7 +1,11 @@
 package app.comm.commapi.Controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -18,7 +22,7 @@ public class PostsController {
     private PostsService postsService;
 
     @PostMapping(value = "/p/addPost/{community}/{user}/{createdAt}/{text}", consumes = "multipart/form-data")
-    public String addPost(@RequestPart MultipartFile file, @PathVariable(name = "community") String community,
+    public String addPost(@RequestPart @Nullable MultipartFile file, @PathVariable(name = "community") String community,
             @PathVariable(name = "user") String user, @PathVariable(name = "createdAt") String createdAt,
             @PathVariable(name = "text") String text) {
         Post post = new Post();
@@ -48,6 +52,16 @@ public class PostsController {
             post.setVideo(null);
         }
         return postsService.savePost(post);
+    }
+
+    @GetMapping("/p/getPosts/{community}")
+    public List<Post> getPostsByCommunity(@PathVariable(name = "community") String community) {
+        return postsService.getPostsByCommunity(community);
+    }
+
+    @GetMapping("/p/getPost/{id}")
+    public Post getPostById(@PathVariable(name = "id") Long id) {
+        return postsService.getPostById(id);
     }
 
 }
