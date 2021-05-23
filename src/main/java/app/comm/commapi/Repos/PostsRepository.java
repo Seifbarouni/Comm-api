@@ -13,4 +13,6 @@ public interface PostsRepository extends JpaRepository<Post, Long> {
     List<Post> findPosts(String user, String community);
 
     Optional<List<Post>> findByCommunity(String community);
+
+    Optional<List<Post>> findByUser(String user);
 }

@@ -78,6 +78,21 @@ public class PostsService {
         return res;
     }
 
+    public List<Post> getPostsByUser(String user) {
+        Optional<List<Post>> posts = postsRepository.findByUser(user);
+        List<Post> res = new ArrayList<>();
+        if (posts.isPresent() && !posts.get().isEmpty()) {
+            res = posts.get();
+            for (Post post : res) {
+                if (post.getImage() != null)
+                    post.setImage(decompressBytes(post.getImage()));
+                else if (post.getVideo() != null)
+                    post.setVideo(decompressBytes(post.getVideo()));
+            }
+        }
+        return res;
+    }
+
     public Post getPostById(Long id) {
         Optional<Post> post = postsRepository.findById(id);
         if (post.isPresent()) {

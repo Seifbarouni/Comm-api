@@ -59,6 +59,11 @@ public class PostsController {
         return postsService.getPostsByCommunity(community);
     }
 
+    @GetMapping("/p/getPostsByUser/{user}")
+    public List<Post> getPostsByUser(@PathVariable(name = "user") String user) {
+        return postsService.getPostsByUser(user);
+    }
+
     @GetMapping("/p/getPost/{id}")
     public Post getPostById(@PathVariable(name = "id") Long id) {
         return postsService.getPostById(id);
