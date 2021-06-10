@@ -1,6 +1,8 @@
 package app.comm.commapi.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,11 +17,16 @@ public class JoinsController {
     private JoinsService joinsService;
 
     @GetMapping("/j/joinCommunity/{communityId}/{userId}")
+    @Caching(evict = { @CacheEvict(value = "commByUsId", key = "#root.args[1]"),
+            @CacheEvict(value = "ExpByUsId", key = "#root.args[1]") })
+
     public String joinCommunity(@PathVariable("communityId") Long communityId, @PathVariable("userId") Long userId) {
         return joinsService.joinCommunity(communityId, userId);
     }
 
     @GetMapping("/j/leaveCommunity/{communityId}/{userId}")
+    @Caching(evict = { @CacheEvict(value = "commByUsId", key = "#root.args[1]"),
+            @CacheEvict(value = "ExpByUsId", key = "#root.args[1]") })
     public String leaveCommunity(@PathVariable("communityId") Long communityId, @PathVariable("userId") Long userId) {
         return joinsService.leaveCommunity(communityId, userId);
     }

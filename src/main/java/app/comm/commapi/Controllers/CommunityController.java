@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,7 @@ public class CommunityController {
     private JoinsService joinsService;
 
     @GetMapping("/mycommunities/{id}")
+    @Cacheable(value = "commByUsId", key = "#root.args[0]")
     public List<Community> getCommunitiesByUserId(@PathVariable(name = "id") Long id) {
         Optional<List<Joins>> userJoins = joinsService.getCommunitiesByUserId(id);
         List<Community> communitiesByUser = new ArrayList<>();
@@ -50,6 +52,7 @@ public class CommunityController {
     }
 
     @GetMapping("/explore/{userId}")
+    @Cacheable(value = "ExpByUsId", key = "#root.args[0]")
     public List<Community> getExploreCommunitiesSection(@PathVariable(name = "userId") Long id) {
         List<Community> exploreCommunities = new ArrayList<>();
         Optional<List<Joins>> userJoins = joinsService.getCommunitiesByUserId(id);

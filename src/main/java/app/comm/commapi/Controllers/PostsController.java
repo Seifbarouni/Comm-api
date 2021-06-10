@@ -3,6 +3,9 @@ package app.comm.commapi.Controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +25,8 @@ public class PostsController {
     private PostsService postsService;
 
     @PostMapping(value = "/p/addPost/{community}/{user}/{createdAt}/{text}", consumes = "multipart/form-data")
+    @Caching(evict = { @CacheEvict(value = "postsByCommName", key = "#root.args[0]"),
+            @CacheEvict(value = "postsByUsrId", key = "#root.args[1]") })
     public String addPost(@RequestPart @Nullable MultipartFile file, @PathVariable(name = "community") String community,
             @PathVariable(name = "user") String user, @PathVariable(name = "createdAt") String createdAt,
             @PathVariable(name = "text") String text) {
@@ -55,11 +60,13 @@ public class PostsController {
     }
 
     @GetMapping("/p/getPosts/{community}")
+    @Cacheable(value = "postsByCommName", key = "#root.args[0]")
     public List<Post> getPostsByCommunity(@PathVariable(name = "community") String community) {
         return postsService.getPostsByCommunity(community);
     }
 
     @GetMapping("/p/getPostsByUser/{user}")
+    @Cacheable(value = "postsByUsrId", key = "#root.args[0]")
     public List<Post> getPostsByUser(@PathVariable(name = "user") String user) {
         return postsService.getPostsByUser(user);
     }
