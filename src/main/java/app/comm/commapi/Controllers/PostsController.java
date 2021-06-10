@@ -69,4 +69,14 @@ public class PostsController {
         return postsService.getPostById(id);
     }
 
+    @GetMapping("/p/likePost/{id}")
+    public String likePost(@PathVariable(name = "id") Long id) {
+        return postsService.likePost(id);
+    }
+
+    @GetMapping("/p/dislikePost/{id}")
+    public String dislikePost(@PathVariable(name = "id") Long id) {
+        return postsService.dislikePost(id);
+    }
+
 }

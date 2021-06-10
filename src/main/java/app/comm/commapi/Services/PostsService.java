@@ -105,4 +105,28 @@ public class PostsService {
         }
         return null;
     }
+
+    public String likePost(Long id) {
+        Optional<Post> post = postsRepository.findById(id);
+        if (post.isPresent()) {
+            Post newPostData = post.get();
+            newPostData.setLikes(newPostData.getLikes() + 1);
+            newPostData = postsRepository.save(newPostData);
+            if (newPostData != null)
+                return "Success";
+        }
+        return "Error : Cannot find post";
+    }
+
+    public String dislikePost(Long id) {
+        Optional<Post> post = postsRepository.findById(id);
+        if (post.isPresent()) {
+            Post newPostData = post.get();
+            newPostData.setLikes(newPostData.getLikes() - 1);
+            newPostData = postsRepository.save(newPostData);
+            if (newPostData != null)
+                return "Success";
+        }
+        return "Error : Cannot find post";
+    }
 }
